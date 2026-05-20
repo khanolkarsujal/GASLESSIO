@@ -25,25 +25,26 @@ if (existsSync(DEST_OUTPUT)) {
 
 // Create base directories
 mkdirSync(join(DEST_OUTPUT, "static"), { recursive: true });
-mkdirSync(join(DEST_OUTPUT, "functions", "index.func"), { recursive: true });
+const funcDir = join(DEST_OUTPUT, "functions", "[[...catchall]].func");
+mkdirSync(funcDir, { recursive: true });
 
 // Copy static assets
 cpSync(join(FRONTEND_DIR, "dist", "client"), join(DEST_OUTPUT, "static"), { recursive: true });
 
 // Copy server output
-cpSync(join(FRONTEND_DIR, "dist", "server"), join(DEST_OUTPUT, "functions", "index.func"), { recursive: true });
+cpSync(join(FRONTEND_DIR, "dist", "server"), funcDir, { recursive: true });
 
 // Write config.json
 writeFileSync(join(DEST_OUTPUT, "config.json"), JSON.stringify({
   version: 3,
   routes: [
     { handle: "filesystem" },
-    { src: "/(.*)", dest: "/index" }
+    { src: "/(.*)", dest: "/[[...catchall]]" }
   ]
 }, null, 2));
 
 // Write function config
-writeFileSync(join(DEST_OUTPUT, "functions", "index.func", ".vc-config.json"), JSON.stringify({
+writeFileSync(join(funcDir, ".vc-config.json"), JSON.stringify({
   runtime: "edge",
   entrypoint: "server.js"
 }, null, 2));
