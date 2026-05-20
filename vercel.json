@@ -1,5 +1,5 @@
 {
-  "installCommand": "cd frontend && npm install",
-  "buildCommand": "cd frontend && npm run build",
-  "outputDirectory": "frontend/dist"
+  "buildCommand": "node vercel-build.mjs",
+  "installCommand": "echo 'dependencies installed by vercel-build.mjs'",
+  "framework": null
 }
